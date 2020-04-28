@@ -20,6 +20,9 @@ RentSchema.virtual('daysToRent').get(function () {
     return dateInDays;
 });
 
+RentSchema.query.fromDate = function (from, to) {
+    return this.where({ startDate: { $gte: new Date(from), $lte: new Date(to) } })
+}
 const rent = mongoose.model('Rent', RentSchema);
 
 module.exports = rent;

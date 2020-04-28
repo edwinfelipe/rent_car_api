@@ -29,7 +29,28 @@ router.post('/rent/add', async (req, res) => {
 });
 
 router.get('/rents', async (req, res) => {
-    const rents = await Rent.find();
+
+    const filters = req.query.filters;
+    const startDate = req.query.from;
+    const endDate = req.query.to;
+
+    let rents;
+    let filteredRents = [];
+
+    if (startDate && endDate) {
+        rents = await Rent.find().fromDate(startDate, endDate);
+    } else {
+        rents = await Rent.find();
+    }
+    if (filters && filters.includes('actives')) {
+        rents.forEach((rent) => {
+            if (rent.isActive) {
+                filteredRents.push(rent);
+            }
+        })
+        res.json(filteredRents);
+        return;
+    }
 
     res.json(rents);
 });
