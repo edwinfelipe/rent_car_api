@@ -5,7 +5,9 @@ const RentSchema = new Schema({
     startDate: { type: Date, default: Date.now, required: true },
     endDate: { type: Date, required: true },
     rentValue: { type: Number, required: true },
-    vehicleId: { type: String }
+    vehicleId: { type: String },
+    vehicle: { type: { licencePlate: String, description: String } },
+    companyProfit: { type: Number }
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 RentSchema.virtual('isActive').get(function () {
@@ -19,6 +21,8 @@ RentSchema.virtual('daysToRent').get(function () {
 
     return dateInDays;
 });
+
+
 
 RentSchema.query.fromDate = function (from, to) {
     return this.where({ startDate: { $gte: new Date(from), $lte: new Date(to) } })

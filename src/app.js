@@ -11,6 +11,8 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(require('./routes/vehicle'));
 app.use(require('./routes/rent'));
+app.use(require('./routes/summary'));
+
 
 
 app.listen(app.get('port'), () => {

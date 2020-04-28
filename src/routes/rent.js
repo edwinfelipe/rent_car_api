@@ -5,6 +5,7 @@ const Vehicle = require('../models/vehicle');
 
 router.post('/rent/add', async (req, res) => {
     const { startDate, endDate, vehicleId } = req.body;
+
     const newRent = new Rent({ startDate, endDate, vehicleId });
     let vehicle;
     try {
@@ -14,6 +15,11 @@ router.post('/rent/add', async (req, res) => {
             return;
         }
         newRent.rentValue = vehicle.price * newRent.daysToRent;
+        newRent.vehicle = {
+            licencePlate: vehicle.licencePlate,
+            description: vehicle.description
+        }
+        newRent.companyProfit = vehicle.rentProfit;
         await Vehicle.findByIdAndUpdate(vehicleId, { rentedUntil: newRent.endDate });
         await newRent.save();
 
