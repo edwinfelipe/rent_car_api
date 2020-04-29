@@ -28,7 +28,7 @@ router.put('/vehicle/:id', async (req, res) => {
         if (!description && !licencePlate && !price) {
             res.status(400).json({ "error": "you need to update at least a field" });
         }
-        vehicle = await Vehicle.findByIdAndUpdate(id, req.body);
+        vehicle = await Vehicle.findByIdAndUpdate(id, req.body, { new: true });
         res.json(vehicle);
 
     } catch (err) {
@@ -42,7 +42,7 @@ router.put('/vehicle/:id', async (req, res) => {
 
 router.post('/vehicle', async (req, res) => {
     const { licencePlate, description, price } = req.body;
-    const newVehicle = new Vehicle({ licencePlate, description, price });
+    const newVehicle = new Vehicle({ licencePlate, description, price: Number.parseFloat(price.toFixed(2)) });
     const errors = [];
     if (!licencePlate) {
         errors.push('The licence plate field is required');
