@@ -1,20 +1,27 @@
 const express = require('express');
+const dotEnv = require('dotenv')
+
+dotEnv.config()
+
 const app = express();
-require('dotenv').config();
+
 require('./database');
 
 app.use(express.json());
-app.set('port', process.env.PORT || 3000);
-
 
 //routes
-
 app.use(require('./routes/vehicle'));
 app.use(require('./routes/rent'));
 app.use(require('./routes/summary'));
 
+app.get('/',(req, res) => {
+    try {
+        res.send({message: 'rent car api'})
+    } catch (error) {
+        res.status(503).send()
+    }
+})
 
-
-app.listen(app.get('port'), () => {
-    console.log('server running on port ' + app.get('port'));
-});
+module.exports = {
+    app
+}
