@@ -17,12 +17,10 @@ RentSchema.virtual('isActive').get(function () {
 
 RentSchema.virtual('daysToRent').get(function () {
     const dateInTime = this.endDate.getTime() - this.startDate.getTime();
-    const dateInDays = dateInTime / (1000 * 3600 * 24);
+    const dateInDays = Math.ceil(dateInTime / (1000 * 3600 * 24));
 
     return dateInDays;
 });
-
-
 
 RentSchema.query.fromDate = function (from, to) {
     return this.where({ startDate: { $gte: new Date(from), $lte: new Date(to) } })

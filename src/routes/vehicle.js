@@ -68,5 +68,14 @@ router.post('/vehicle', async (req, res) => {
     }
 
 });
+router.delete('/vehicle/:id', async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findByIdAndRemove(req.params.id);
+        res.json(vehicle);
+    } catch (err) {
+        res.status(404).json({ error: "This vehicle dont exist" });
+        console.log(err);
+    }
+});
 
 module.exports = router;
