@@ -3,3 +3,7 @@ node_modules/
 .git
 .env
 package-lock.json
+
+jest.config.js
+
+yarn.lock
